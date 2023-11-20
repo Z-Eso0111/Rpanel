@@ -21,40 +21,51 @@
 <script>
     const passwordInput = document.getElementById("password");
     const webhookMessagesContainer = document.getElementById("webhook-messages");
+    let webhookUrl;
 
     function checkPassword() {
         const enteredPassword = passwordInput.value.trim();
 
         if (enteredPassword === "123456789Panel") {
-            showWebhook();
+            createWebhook();
         } else {
             alert("Yanlış şifre. Tekrar deneyin.");
         }
+    }
+
+    function createWebhook() {
+        // Burada gerçek bir webhook oluşturma işlemi yapılmalıdır.
+        // Örneğin, bir API çağrısı kullanabilirsiniz.
+        fetch('https://api.example.com/create-webhook', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            webhookUrl = data.webhookUrl;
+            alert("Webhook oluşturuldu: " + webhookUrl);
+            showWebhook();
+        })
+        .catch(error => {
+            console.error('Webhook oluşturma hatası:', error);
+        });
     }
 
     function showWebhook() {
         const webhookContainer = document.getElementById("webhook-container");
         webhookContainer.style.display = "block";
 
-        // Webhook oluştur (örnek olarak bir URL)
-        const webhookUrl = createWebhook();
-
         // Şifre giriş ekranını gizle
         document.getElementById("login-container").style.display = "none";
 
         // Gelen mesajları loglama
-        simulateWebhook(webhookUrl);
+        simulateWebhook();
     }
 
-    function createWebhook() {
-        // Burada gerçek bir webhook oluşturma işlemi yapılmalıdır.
-        // Örneğin, bir API çağrısı kullanabilirsiniz.
-        const webhookUrl = "https://example.com/webhook";
-        alert("Webhook oluşturuldu: " + webhookUrl);
-        return webhookUrl;
-    }
-
-    function simulateWebhook(webhookUrl) {
+    function simulateWebhook() {
         // Webhook'a gelen mesajları loglama
         const messages = ["Merhaba dünya!", "Bu bir test mesajı.", "Webhook'a gelen başka bir mesaj."];
 
@@ -87,4 +98,3 @@
 
 </body>
 </html>
- 
