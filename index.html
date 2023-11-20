@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webhook Test</title>
+    <title>Webhook ve Mesaj Log</title>
 </head>
 <body>
 
@@ -13,13 +13,12 @@
     <button onclick="checkPassword()">OK</button>
 </div>
 
-<div id="webhook-container" style="display: none;">
+<div id="webhook-container" style="display:none;">
     <h2>Webhook Mesajları</h2>
     <ul id="webhook-messages"></ul>
 </div>
 
 <script>
-    const webhookUrl = "BURAYA_WEBHOOK_URLNIZI_YAZIN"; // Webhook URL'sini buraya ekleyin
     const passwordInput = document.getElementById("password");
     const webhookMessagesContainer = document.getElementById("webhook-messages");
 
@@ -35,40 +34,48 @@
 
     function showWebhook() {
         const webhookContainer = document.getElementById("webhook-container");
-        webhookContainer.style.display = "block"; // Webhook konteynırını görünür yap
+        webhookContainer.style.display = "block";
 
-        // Sabit webhook URL'sine giden bir istek gönderme (örnek)
-        // Bu noktada gerçek bir istek gönderme kütüphanesi kullanmanız gerekebilir
-        // Örneğin, fetch() kullanabilirsiniz.
-        // Ancak bu örnekte sadece bir simülasyon yapıyorum.
-        simulateWebhook();
-        
+        // Webhook oluştur (örnek olarak bir URL)
+        const webhookUrl = createWebhook();
+
         // Şifre giriş ekranını gizle
         document.getElementById("login-container").style.display = "none";
 
-        // Mesajları her saniye bir güncelleyen bir işlem başlat
-        setInterval(updateWebhookMessages, 1000);
+        // Gelen mesajları loglama
+        simulateWebhook(webhookUrl);
     }
 
-    function simulateWebhook() {
-        const message = "Webhook'a gelen mesaj: Merhaba dünya!";
-        appendWebhookMessage(message);
-
-        // Mesajı bir dosyaya yazma simülasyonu (tarayıcıda çalışmayacaktır, sadece örnek)
-        saveMessageToFile(message);
+    function createWebhook() {
+        // Burada gerçek bir webhook oluşturma işlemi yapılmalıdır.
+        // Örneğin, bir API çağrısı kullanabilirsiniz.
+        const webhookUrl = "https://example.com/webhook";
+        alert("Webhook oluşturuldu: " + webhookUrl);
+        return webhookUrl;
     }
 
-    function saveMessageToFile(message) {
-        // Burada tarayıcıda dosyaya yazma işlemi yapmak mümkün değildir.
-        // Gerçek bir sunucu tarafı uygulaması kullanmanız gerekebilir.
+    function simulateWebhook(webhookUrl) {
+        // Webhook'a gelen mesajları loglama
+        const messages = ["Merhaba dünya!", "Bu bir test mesajı.", "Webhook'a gelen başka bir mesaj."];
+
+        messages.forEach(message => {
+            // Gelen mesajı log dosyasına yazma
+            logMessage(message);
+
+            // Webhook mesajlarını ekrana gösterme
+            appendWebhookMessage(message);
+        });
     }
 
-    function updateWebhookMessages() {
-        // Burada dosyadan mesajları okuma işlemi yapmak mümkün değildir.
-        // Gerçek bir sunucu tarafı uygulaması kullanmanız gerekebilir.
+    function logMessage(message) {
+        // Gelen mesajı bir dosyaya yazma (simülasyon)
+        // Gerçek bir uygulama için bu işlem sunucu tarafında yapılmalıdır.
+        console.log("Mesaj loglandı:", message);
 
-        // Ancak, simulateWebhook içindeki mesajları kullanarak simülasyon yapabiliriz.
-        simulateWebhook();
+        // Simülasyon için ek olarak, mesajları bir dosyaya yazalım.
+        const logFile = "meslog.txt";
+        const fs = require('fs'); // Bu satır gerçek uygulamada kullanılamaz, tarayıcıda çalışmaz
+        fs.appendFileSync(logFile, message + "\n");
     }
 
     function appendWebhookMessage(message) {
